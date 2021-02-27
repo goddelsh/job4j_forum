@@ -31,9 +31,9 @@ public class UserService {
         return this.userList;
     }
 
-    public User getUser(String email, String password) {
+    public User getUser(String name) {
         return userList.stream()
-                .filter(user -> user.getEmail().equals(email) && user.getPassword().equals(password))
+                .filter(user -> user.getName().equals(name))
                 .findFirst().orElse(null);
     }
 

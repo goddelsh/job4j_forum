@@ -7,23 +7,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.job4j.forum.components.CustomAuthenticationProvider;
 import ru.job4j.forum.service.UserService;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     final private UserService userService;
+    final private CustomAuthenticationProvider customAuthenticationProvider;
 
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, CustomAuthenticationProvider customAuthenticationProvider) {
         this.userService = userService;
+        this.customAuthenticationProvider = customAuthenticationProvider;
     }
 
     @Bean
@@ -37,12 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        var inMemory = auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).getUserDetailsService();
-       // inMemory.createUser(new User("manager", "$2a$10$a1Dgv1ooPKlMY5Eml/qA/.Danb4hufYjQp0e0yDmf4vaITha5nSp.", List.of(new SimpleGrantedAuthority("ROLE_USER"))));
-        this.userService.getAll()
-                    .forEach(user -> {
-                        inMemory.createUser(new User(user.getName(), user.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER"))));
-                    });
+        auth.authenticationProvider(this.customAuthenticationProvider);
+//        var inMemory = auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).getUserDetailsService();
+//       // inMemory.createUser(new User("manager", "$2a$10$a1Dgv1ooPKlMY5Eml/qA/.Danb4hufYjQp0e0yDmf4vaITha5nSp.", List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+//        this.userService.getAll()
+//                    .forEach(user -> {
+//                        inMemory.createUser(new User(user.getName(), user.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+//                    });
     }
 
     @Bean
@@ -52,8 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login").permitAll()
-                .antMatchers("/reg").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/login", "/reg")
+                .permitAll()
                 .antMatchers("/**").hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin()
