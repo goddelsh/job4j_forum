@@ -8,6 +8,8 @@ public class Post {
     private String name;
     private String desc;
     private Calendar created;
+    private User user;
+
 
     public static Post of(String name) {
         Post post = new Post();
@@ -62,5 +64,13 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, desc, created);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

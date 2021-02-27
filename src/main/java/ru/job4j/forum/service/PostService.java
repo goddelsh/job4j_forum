@@ -18,4 +18,19 @@ public class PostService {
     public List<Post> getAll() {
         return posts;
     }
+
+    public Post addPost(Post post) {
+        posts.add(post);
+        return post;
+    }
+
+    public Post edit(Post post) {
+        for (Post targetPost : posts) {
+            if (targetPost.getId() == post.getId()) {
+                targetPost = post;
+                break;
+            }
+        }
+        return post;
+    }
 }
