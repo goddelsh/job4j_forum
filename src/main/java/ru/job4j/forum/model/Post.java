@@ -4,24 +4,45 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class Post {
-    private int id;
+    private Integer id;
     private String name;
     private String desc;
     private Calendar created;
     private User user;
+    private Post topic;
 
+    public Post getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Post topic) {
+        this.topic = topic;
+    }
+
+
+    public static Post of(Integer id) {
+        Post post = new Post();
+        post.id = id;
+        return post;
+    }
 
     public static Post of(String name) {
         Post post = new Post();
         post.name = name;
         return post;
     }
+    public static Post of(Integer id, String name) {
+        Post post = new Post();
+        post.name = name;
+        post.id = id;
+        return post;
+    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -55,15 +76,12 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return id == post.id &&
-                Objects.equals(name, post.name) &&
-                Objects.equals(desc, post.desc) &&
-                Objects.equals(created, post.created);
+        return id == post.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, desc, created);
+        return Objects.hash(id);
     }
 
     public User getUser() {

@@ -23,18 +23,12 @@ public class UserService {
         user.setPassword("$2a$10$a1Dgv1ooPKlMY5Eml/qA/.Danb4hufYjQp0e0yDmf4vaITha5nSp.");
             user.setEmail("user");
         user.setAthority(new Athority(2, "USER"));
-        user.setPost(Set.of(Post.of("Продаю машину ладу 01.")));
+        //user.setPost(Set.of(Post.of("Продаю машину ладу 01.")));
         userList.add(user);
     }
 
     public List<User> getAll() {
         return this.userList;
-    }
-
-    public User getUser(String name) {
-        return userList.stream()
-                .filter(user -> user.getName().equals(name))
-                .findFirst().orElse(null);
     }
 
     public User adduser(User user){
@@ -43,4 +37,9 @@ public class UserService {
         return user;
     }
 
+    public User getUser(String name) {
+        return userList.stream()
+                .filter(user -> user.getName().equals(name))
+                .findFirst().orElse(null);
+    }
 }

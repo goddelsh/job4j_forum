@@ -15,6 +15,19 @@
 </head>
 <body>
 <div class="container mt-3">
+    <div>
+        Login as : ${user.name}
+    </div>
+    <c:if test="${not empty topic and not empty topic.id}">
+        <div style="color:red; font-weight: bold; margin: 30px 0px;">
+            <a href="/">Назад</a>
+            Тема: ${topic.name}
+            Описание: ${topic.desc}
+        </div>
+    </c:if>
+    <div style="color:red; font-weight: bold; margin: 30px 0px;">
+        <a href="/edit<c:if test="${not empty topic and not empty topic.id}">?topic=${topic.id}</c:if>">Создать пост</a>
+    </div>
     <div class="row">
         <h4>Форум job4j</h4>
     </div>
@@ -29,6 +42,13 @@
             <c:forEach items="${posts}" var="post">
                 <tr>
                     <td><c:out value="${post.name}"/></td>
+                    <c:if test="${not empty post.user}">
+                        <td><a href="/index?id=${post.id}<c:if test="${not empty topic and not empty topic.id}">&topic=${topic.id}</c:if>">Детали</a></td>
+                        <c:if test="${user.id eq post.user.id}">
+                            <td><a href="/edit?id=${post.id}<c:if test="${not empty topic and not empty topic.id}">&topic=${topic.id}</c:if>
+                                    ">Изменить</a></td>
+                        </c:if>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>

@@ -2,7 +2,7 @@ package ru.job4j.forum.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,37 +16,31 @@ import ru.job4j.forum.service.UserService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    final private UserService userService;
-    final private CustomAuthenticationProvider customAuthenticationProvider;
 
-    public SecurityConfig(UserService userService, CustomAuthenticationProvider customAuthenticationProvider) {
+    public SecurityConfig(UserService userService) {
         this.userService = userService;
-        this.customAuthenticationProvider = customAuthenticationProvider;
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
+    public UserService getUserService() {
+        return userService;
     }
 
+
+    final private UserService userService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(this.customAuthenticationProvider);
-//        var inMemory = auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).getUserDetailsService();
-//       // inMemory.createUser(new User("manager", "$2a$10$a1Dgv1ooPKlMY5Eml/qA/.Danb4hufYjQp0e0yDmf4vaITha5nSp.", List.of(new SimpleGrantedAuthority("ROLE_USER"))));
-//        this.userService.getAll()
-//                    .forEach(user -> {
-//                        inMemory.createUser(new User(user.getName(), user.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER"))));
-//                    });
+        auth.authenticationProvider(getAProvider());
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider getAProvider(){
+        return new CustomAuthenticationProvider(this.userService, passwordEncoder());
     }
 
     @Override
