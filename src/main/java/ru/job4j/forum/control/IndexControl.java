@@ -5,10 +5,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.forum.model.Post;
+import ru.job4j.forum.model.TestObj;
 import ru.job4j.forum.service.PostService;
 import ru.job4j.forum.service.UserService;
 
@@ -20,6 +19,20 @@ public class IndexControl {
     public IndexControl(PostService posts, UserService userService) {
         this.posts = posts;
         this.userService = userService;
+    }
+
+
+
+    @GetMapping({"/test"})
+    public String test() {
+
+        return "test";
+    }
+
+    @PostMapping({"/test"})
+    public String testPost(@ModelAttribute TestObj test, Authentication authentication) {
+        System.out.println(test);
+        return "redirect:/";
     }
 
 
