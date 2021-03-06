@@ -5,11 +5,12 @@ import ru.job4j.forum.model.Athority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class AthorityService {
-    List<Athority> athorityList = new ArrayList<>();
+    final List<Athority> athorityList = new CopyOnWriteArrayList<>();
 
     public AthorityService() {
         this.athorityList.add(new Athority(1, "ROLE_ADMIN"));

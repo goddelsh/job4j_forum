@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <body>
-<c:if test="${not empty errorMessage}">
+<c:if test="${not empty error}">
     <div style="color:red; font-weight: bold; margin: 30px 0px;">
-            ${errorMessage}
+            ${error}
     </div>
 </c:if>
 <form name='reg' action="<c:url value='/reg'/>" method='POST'>

@@ -7,13 +7,16 @@ import ru.job4j.forum.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UserService {
 
-    final private List<User> userList = new ArrayList<>();
+    final private Map<String, User> userList = new ConcurrentHashMap<>();
     final private AtomicInteger aInteger = new AtomicInteger();
 
     public UserService() {
@@ -24,22 +27,20 @@ public class UserService {
             user.setEmail("user");
         user.setAthority(new Athority(2, "USER"));
         //user.setPost(Set.of(Post.of("Продаю машину ладу 01.")));
-        userList.add(user);
-    }
-
-    public List<User> getAll() {
-        return this.userList;
+        userList.putIfAbsent(user.getName(), user);
     }
 
     public User adduser(User user){
+        var u = userList.get(user.getName());
+        if (u != null) {
+            throw new IllegalStateException("User already exist!");
+        }
         user.setId(this.aInteger.getAndIncrement());
-        userList.add(user);
+        userList.putIfAbsent(user.getName(), user);
         return user;
     }
 
     public User getUser(String name) {
-        return userList.stream()
-                .filter(user -> user.getName().equals(name))
-                .findFirst().orElse(null);
+        return userList.get(name);
     }
 }
