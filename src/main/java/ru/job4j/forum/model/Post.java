@@ -1,15 +1,44 @@
 package ru.job4j.forum.model;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name="posts")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String desc;
+    private String description;
     private Calendar created;
+    @ManyToOne
+    @JoinColumn(name="user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name="topic_id")
     private Post topic;
+
+    public Post(Integer id) {
+        this.id = id;
+    }
+
+    public Post() {
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+    @OneToMany(mappedBy = "topic")
+    private List<Post> posts = new ArrayList<>();
 
     public Post getTopic() {
         return topic;
@@ -54,12 +83,12 @@ public class Post {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
     public Calendar getCreated() {

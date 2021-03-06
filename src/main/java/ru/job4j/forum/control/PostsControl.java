@@ -7,20 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.forum.model.Post;
 import ru.job4j.forum.model.PostForm;
-import ru.job4j.forum.service.PostService;
-import ru.job4j.forum.service.UserService;
-
-import javax.servlet.http.HttpServletRequest;
+import ru.job4j.forum.repository.PostsRepository;
+import ru.job4j.forum.repository.UsersRepository;
 
 @Controller
 public class PostsControl {
 
-    private final PostService postService;
-    private final UserService userService;
+    final private UsersRepository usersRepository;
+    final private PostsRepository postsRepository;
 
-    public PostsControl(PostService postService, UserService userService) {
-        this.postService = postService;
-        this.userService = userService;
+    public PostsControl(UsersRepository usersRepository, PostsRepository postsRepository) {
+        this.usersRepository = usersRepository;
+        this.postsRepository = postsRepository;
     }
 
 
@@ -28,18 +26,18 @@ public class PostsControl {
     public String edit(@RequestParam(value = "id", required = false) Integer id,
                        @RequestParam(value ="topic", required = false) Integer topic, Model model) {
         if(id != null) {
-            model.addAttribute("post", postService.getById(id));
+            model.addAttribute("post", postsRepository.findById(id).orElse(null));
         }
         if(topic != null) {
-            model.addAttribute("topic", postService.getById(topic));
+            model.addAttribute("topic", postsRepository.findById(topic).orElse(null));
         }
         return "edit";
     }
 
     @PostMapping("/edit")
     public String editPost(@ModelAttribute Post post, Authentication authentication) {
-        post.setUser(userService.getUser(authentication.getName()));
-        this.postService.edit(post);
+        post.setUser(usersRepository.getByName(authentication.getName()));
+        this.postsRepository.save(post);
         return "redirect:/";
     }
 
@@ -48,12 +46,12 @@ public class PostsControl {
                              Authentication authentication) {
         Post newPost = new Post();
         newPost.setName(post.getName());
-        newPost.setDesc(post.getDesc());
-        newPost.setUser(userService.getUser(authentication.getName()));
-        if (post != null) {
-            newPost.setTopic(postService.getById(post.getTopic()));
+        newPost.setDescription(post.getDescription());
+        newPost.setUser(usersRepository.getByName(authentication.getName()));
+        if (post != null && post.getTopic() != null) {
+            newPost.setTopic(postsRepository.findById(post.getTopic()).orElse(null));
         }
-        this.postService.addPost(newPost);
+        this.postsRepository.save(newPost);
         return "redirect:/";
     }
 

@@ -1,8 +1,14 @@
 package ru.job4j.forum.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+
+@Entity
+@Table(name="athorities")
 public class Athority {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String role;
 

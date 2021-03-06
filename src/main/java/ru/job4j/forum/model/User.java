@@ -1,26 +1,24 @@
 package ru.job4j.forum.model;
 
-import java.util.HashSet;
-import java.util.List;
+import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
+@Entity
+@Table(name="users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String password;
     private String name;
     private String email;
-    private Set<Post> post = new HashSet<>();
-    private Athority athority = new Athority(0, "NO_ROLE");
+   // private Set<Post> post = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="authority_id")
+    private Athority athority;
+
     private boolean enabled = true;
 
-    public Set<Post> getPost() {
-        return post;
-    }
-
-    public void setPost(Set<Post> post) {
-        this.post = post;
-    }
 
     @Override
     public boolean equals(Object o) {

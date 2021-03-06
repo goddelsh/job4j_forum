@@ -22,7 +22,7 @@
         <div style="color:red; font-weight: bold; margin: 30px 0px;">
             <a href="/">Назад</a>
             Тема: ${topic.name}
-            Описание: ${topic.desc}
+            Описание: ${topic.description}
         </div>
     </c:if>
     <div style="color:red; font-weight: bold; margin: 30px 0px;">

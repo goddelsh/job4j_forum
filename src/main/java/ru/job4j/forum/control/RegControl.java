@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.forum.model.User;
-import ru.job4j.forum.service.AthorityService;
-import ru.job4j.forum.service.UserService;
+import ru.job4j.forum.repository.AthoritiesRepository;
+import ru.job4j.forum.repository.UsersRepository;
 
 @Controller
 public class RegControl {
 
-    final private UserService userService;
-    final private AthorityService athorityService;
+    final private UsersRepository usersRepository;
+    final private AthoritiesRepository athoritiesRepository;
     private final PasswordEncoder encoder;
 
-    public RegControl(UserService userService, AthorityService athorityService, PasswordEncoder encoder) {
-        this.userService = userService;
-        this.athorityService = athorityService;
+    public RegControl(UsersRepository usersRepository, AthoritiesRepository athoritiesRepository, PasswordEncoder encoder) {
+        this.usersRepository = usersRepository;
+        this.athoritiesRepository = athoritiesRepository;
         this.encoder = encoder;
     }
 
@@ -34,12 +34,12 @@ public class RegControl {
 
     @PostMapping("/reg")
     public String reg(@ModelAttribute User user) {
-        user.setAthority(athorityService.getAthorityByRole("USER"));
+        user.setAthority(athoritiesRepository.findById(1).orElse(null));
         user.setPassword(encoder.encode(user.getPassword()));
         try {
-            userService.adduser(user);
-        }catch (IllegalStateException ex) {
-            return "redirect:/reg?error="+ex.getMessage();
+            usersRepository.save(user);
+        }catch (Exception ex) {
+            return "redirect:/reg?error=Parametrs error";
         }
 
         return "redirect:/login";

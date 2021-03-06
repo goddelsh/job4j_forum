@@ -22,10 +22,10 @@
     </c:otherwise>
 </c:choose>  " method='POST'>
     <table>
-        <c:if test="${not empty id}">
+        <c:if test="${not empty post}">
             <tr>
                 <td>Id:</td>
-                <td><input type="text" type='text' name='id' value="${id}" readonly></td>
+                <td><input type="text" type='text' name='id' value="${post.id}" readonly></td>
 
             </tr>
         </c:if>
@@ -36,7 +36,7 @@
         </tr>
         <tr>
             <td>Desc:</td>
-            <td><input type='text' name='desc'/></td>
+            <td><input type='text' name='description'/></td>
             <c:if test="${not empty topic}">
                 <td><input type="text"  name='topic' value="${topic.id}" hidden></td>
             </c:if>
