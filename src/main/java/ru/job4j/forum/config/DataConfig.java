@@ -14,41 +14,41 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-
-@Configuration
-@PropertySource("classpath:application.properties")
-@EnableJpaRepositories("ru.job4j.forum.repository")
-@EnableTransactionManagement
+//
+//@Configuration
+//@PropertySource("classpath:application.properties")
+//@EnableJpaRepositories("ru.job4j.forum.repository")
+//@EnableTransactionManagement
 public class DataConfig {
-    @Bean
-    public DataSource ds(@Value("${jdbc.driver}") String driver,
-                         @Value("${jdbc.url}") String url,
-                         @Value("${jdbc.username}") String username,
-                         @Value("${jdbc.password}") String password) {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName(driver);
-        ds.setUrl(url);
-        ds.setUsername(username);
-        ds.setPassword(password);
-        return ds;
-    }
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
-        vendorAdapter.setShowSql(true);
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("ru.job4j.forum");
-        factory.setDataSource(ds);
-        return factory;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory);
-        return txManager;
-    }
+//    @Bean
+//    public DataSource ds(@Value("${jdbc.driver}") String driver,
+//                         @Value("${jdbc.url}") String url,
+//                         @Value("${jdbc.username}") String username,
+//                         @Value("${jdbc.password}") String password) {
+//        BasicDataSource ds = new BasicDataSource();
+//        ds.setDriverClassName(driver);
+//        ds.setUrl(url);
+//        ds.setUsername(username);
+//        ds.setPassword(password);
+//        return ds;
+//    }
+//
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) {
+//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        vendorAdapter.setGenerateDdl(true);
+//        vendorAdapter.setShowSql(true);
+//        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+//        factory.setJpaVendorAdapter(vendorAdapter);
+//        factory.setPackagesToScan("ru.job4j.forum");
+//        factory.setDataSource(ds);
+//        return factory;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+//        JpaTransactionManager txManager = new JpaTransactionManager();
+//        txManager.setEntityManagerFactory(entityManagerFactory);
+//        return txManager;
+//    }
 }
