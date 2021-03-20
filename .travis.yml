@@ -21,6 +21,12 @@ notifications:
     on_success: never
     on_failure: always
 
+deploy:
+  provider: heroku
+  api_key:
+    secure: NHc9xQrqf0U7QbUGS+bneIMUWZjOiIPOlTAoHvQHQj3D3oEMvUoV2UKljeXKd6ZtxMJ97HEcaRlvCE11xQKjB6MAI+FjcIE9yM+QIwWa1mhen0XynrjLUCCF+PSOeDXKFmBRpuojS5yxp/Tsx4/dwm8PMHzoIlpnVulcxWDO9iBpFE7hDBdmjjPB7NK+vPguxg9gPn+6qQaRkb2EqnPOhO6jMH8SW/Rjh+iNDpqvEJiSSXQciG75awPKAfbUcYCa9DSgzMyKu1MbbYSSn7w4XhdllPvPpEq6VT4V2GHUVxtBRG4UhetOl1knxUk9IsQ0HVTe6WgT/Lw10sSNh6fLCKGCMSDyVCAd7rZ/wYqvCeDALCJnzOjD0Bk5po0EBMVZ3psOUIRDm0JMNNLHRpjWTVOAWhwM3Fg640S013RZdJhaZC2n2Q8yukmRmXckvGkCDQCkR06WrY9FdClBnwSq/+eWgypZCNj/YecbgFa9o/GO4kKlJCMsPZUV0Pl1RNwDXDGhnuzwREssLhUg41V8Wiq3JdoyQDrsNyjBoLlnmrKJGJdP8wFdut+iCtf63PfNfEl6WIPeMaxAwGDgHNYSikJ76hqHVXkwTW+k3aRq4lUxOugKXhhEf2HysRpwmZEdKIZPTo4BySP6Z/Q1OflYVmjkna0iQYZnz7w39ak7/gQ=
+  app: secret-journey-92211
+
 env:
   global:
     - CODECOV_TOKEN="063f3e4b-ea03-4340-9c0b-7d1d35a91023"
